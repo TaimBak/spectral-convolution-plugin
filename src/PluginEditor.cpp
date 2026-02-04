@@ -14,9 +14,7 @@ SpectralConvolverAudioProcessorEditor::SpectralConvolverAudioProcessorEditor(Spe
 {
     // Algorithm toggle button
     algorithmToggle.setButtonText("Use Time Domain");
-    algorithmToggle.setToggleState(
-        audioProcessor.getConvolverType() == ConvolverType::TimeDomain,
-        juce::dontSendNotification);
+    algorithmToggle.setToggleState(audioProcessor.getConvolverType() == ConvolverType::TimeDomain,juce::dontSendNotification);
     algorithmToggle.addListener(this);
     addAndMakeVisible(algorithmToggle);
 

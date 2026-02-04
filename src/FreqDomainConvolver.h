@@ -18,9 +18,6 @@ public:
     // Convenience overload
     std::vector<float> processBlock(const std::vector<float>& x);
 
-    // After feeding all input blocks, call this to collect the remaining N-1 samples.
-    std::vector<float> flush();
-
     int getFFTSize()   const { return K; }
     int getBlockSize() const { return B; }
     int getIRLength()  const { return N; }

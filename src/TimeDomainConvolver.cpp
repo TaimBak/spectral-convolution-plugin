@@ -1,7 +1,10 @@
 #include "TimeDomainConvolver.h"
 
 TimeDomainConvolver::TimeDomainConvolver(const std::vector<float>& inputIR)
-    : ir(inputIR), irSize(ir.size()), delayBuffer(std::max<std::size_t>(1, ir.size()), 0.0f), writeIndex(0)
+    : ir(inputIR)
+    , irSize(ir.size())
+    , delayBuffer(std::max<std::size_t>(1, ir.size()), 0.0f)
+    , writeIndex(0)
 {
     if (irSize == 0) throw std::invalid_argument("IR cannot be empty");
 }
@@ -38,11 +41,9 @@ float TimeDomainConvolver::processSample(float x)
 
 void TimeDomainConvolver::processBlock(const float* in, float* out, std::size_t numSamples)
 {
+    // Output wet signal only (dry/wet mixing handled by processor)
     for (std::size_t n = 0; n < numSamples; n++)
-    {
-        // Output wet signal only (dry/wet mixing handled by processor)
         out[n] = processSample(in[n]);
-    }
 }
 
 std::vector<float> TimeDomainConvolver::processBlock(const float* input, int numSamples)
@@ -50,9 +51,7 @@ std::vector<float> TimeDomainConvolver::processBlock(const float* input, int num
     std::vector<float> output(numSamples);
 
     for (int n = 0; n < numSamples; n++)
-    {
         output[n] = processSample(input[n]);
-    }
 
     return output;
 }
