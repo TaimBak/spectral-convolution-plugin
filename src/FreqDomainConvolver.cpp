@@ -45,7 +45,7 @@ std::vector<float> FreqDomainConvolver::processBlock(const float *x,
   fft.perform(Yspec.data(), timeC.data(), true);
 
   // Split output into two segments
-  const float invK = 1.0f / (float)K;   // Store for normalizing outputs
+  //const float invK = 1.0f / (float)K;   // Store for normalizing outputs
   const int valid = numSamples + N - 1; // sample <= K
   const int head = numSamples;          // samples to output now
   const int tail = valid - head;        // samples to carry
@@ -58,7 +58,7 @@ std::vector<float> FreqDomainConvolver::processBlock(const float *x,
   // 4. Build output head = current head + previous overlap
   std::vector<float> y((size_t)head);
   for (int n = 0; n < head; ++n) {
-    const float cur = timeC[n].real() * invK;
+    const float cur = timeC[n].real() /* * invK */;
     const float prv = (n < (int)overlap.size()) ? overlap[(size_t)n] : 0.0f;
     y[(size_t)n] = cur + prv; // Sum the head of the current block with the
                               // overlap created on the last pass
@@ -76,7 +76,7 @@ std::vector<float> FreqDomainConvolver::processBlock(const float *x,
 
   // Sum with current block's tail
   for (int t = 0; t < tail; ++t)
-    newOverlap[(size_t)t] += timeC[head + t].real() * invK;
+    newOverlap[(size_t)t] += timeC[head + t].real() /* * invK */;
 
   overlap.swap(newOverlap); // Box it
   return y;                 // Ship it

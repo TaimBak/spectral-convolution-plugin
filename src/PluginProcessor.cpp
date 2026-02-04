@@ -179,7 +179,7 @@ void SpectralConvolverAudioProcessor::processBlock(juce::AudioBuffer<float>& buf
     const auto totalNumInputChannels = getTotalNumInputChannels();
     const auto totalNumOutputChannels = getTotalNumOutputChannels();
     const auto numSamples = buffer.getNumSamples();
-    const float wetGain = (currentConvolverType == ConvolverType::FrequencyDomain) ? 147.0f : 1.0f;
+    const float wetGain = 1.0f; //(currentConvolverType == ConvolverType::FrequencyDomain) ? 147.0f : 1.0f;
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, numSamples);
