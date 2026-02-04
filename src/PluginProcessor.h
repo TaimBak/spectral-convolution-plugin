@@ -2,8 +2,15 @@
 
 #include <JuceHeader.h>
 #include "FreqDomainConvolver.h"
+#include "TimeDomainConvolver.h"
 #include <memory>
 #include <vector>
+
+enum class ConvolverType
+{
+    FrequencyDomain,
+    TimeDomain
+};
 
 class SpectralConvolverAudioProcessor : public juce::AudioProcessor
 {
@@ -43,21 +50,23 @@ public:
     // IR Management
     
     void loadImpulseResponse (const std::vector<float>& ir);
-    
     bool loadImpulseResponseFromFile (const juce::File& file);
-    
     bool isIRLoaded() const { return irLoaded.load(); }
-    
     int getIRLength() const { return irLength; }
+
+    // Algorithm Selection
+	void setConvolverType(ConvolverType type);
+	ConvolverType getConvolverType() const { return currentConvolverType.load(); }
 
 private:
     
     static int calculateFFTOrder (int irLength, int blockSize);
-    
     void rebuildConvolvers();
     
-    
-    std::vector<std::unique_ptr<FreqDomainConvolver>> convolvers;
+    std::vector<std::unique_ptr<FreqDomainConvolver>> freqConvolvers;
+    std::vector<std::unique_ptr<TimeDomainConvolver>> timeConvolvers;
+
+	std::atomic<ConvolverType> currentConvolverType{ ConvolverType::FrequencyDomain };
     
     std::vector<float> currentIR;
     int irLength = 0;

@@ -11,19 +11,25 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-class SpectralConvolverAudioProcessorEditor  : public juce::AudioProcessorEditor
+class SpectralConvolverAudioProcessorEditor : public juce::AudioProcessorEditor,
+    public juce::Button::Listener
 {
 public:
-    SpectralConvolverAudioProcessorEditor (SpectralConvolverAudioProcessor&);
+    SpectralConvolverAudioProcessorEditor(SpectralConvolverAudioProcessor&);
     ~SpectralConvolverAudioProcessorEditor() override;
 
-    void paint (juce::Graphics&) override;
+    void paint(juce::Graphics&) override;
     void resized() override;
 
+    void buttonClicked(juce::Button* button) override;
+
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
+    void updateStatusLabel();
     SpectralConvolverAudioProcessor& audioProcessor;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SpectralConvolverAudioProcessorEditor)
+    juce::ToggleButton algorithmToggle;
+    juce::Label algorithmLabel;
+    juce::Label statusLabel;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SpectralConvolverAudioProcessorEditor)
 };
