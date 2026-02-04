@@ -17,7 +17,7 @@ juce_add_plugin(SpectralConvolver
     EDITOR_WANTS_KEYBOARD_FOCUS FALSE
     VST3_CATEGORIES Fx
     AU_MAIN_TYPE kAudioUnitType_Effect
-    COPY_PLUGIN_AFTER_BUILD TRUE
+    COPY_PLUGIN_AFTER_BUILD FALSE
 )
 
 juce_generate_juce_header(SpectralConvolver)
@@ -60,3 +60,6 @@ target_link_libraries(SpectralConvolver
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags
 )
+
+get_target_property(JUCE_INCLUDE_DIRS juce::juce_core INTERFACE_INCLUDE_DIRECTORIES)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${JUCE_INCLUDE_DIRS})
